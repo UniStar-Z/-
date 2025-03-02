@@ -24,7 +24,7 @@ def load_model(model_path, device):
         logger.error(f"加载模型时出错: {e}")
         raise e
 
-def preprocess_image(image_path, image_size=(224, 224)):
+def preprocess_image(image_path, image_size=(224, 224)): # 调整为模型输入尺寸
     """预处理图像，使其适合模型输入"""
     if not os.path.exists(image_path):
         logger.error(f"图像文件未找到: {image_path}")
@@ -32,7 +32,7 @@ def preprocess_image(image_path, image_size=(224, 224)):
     try:
         image = Image.open(image_path).convert('RGB')
         preprocess = transforms.Compose([
-            transforms.Resize(image_size),  # 调整为模型输入尺寸
+            transforms.Resize(image_size),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
@@ -63,7 +63,6 @@ def detect_defects(image_path, model, device, defect_types=None, threshold=0.5):
     return defects
 
 if __name__ == "__main__":
-    # 示例用法
     model_path = 'models/defect_detection_model.pth'  # 模型路径，可能需要修改此路径
     image_path = 'path/to/image.jpg'  # 图像路径，可能需要修改此路径
 

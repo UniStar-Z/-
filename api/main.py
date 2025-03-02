@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 import os
 import uuid
+import asyncio
 from utils.image_processing import detect_defects
 from utils.data_converter import json_to_xml, xml_to_json
 
@@ -53,4 +54,14 @@ async def convert_xml_to_json(xml_data: str):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+    def run():
+        config = uvicorn.Config(app, host="0.0.0.0", port=8000)
+        server = uvicorn.Server(config)
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            loop.create_task(server.serve())
+        else:
+            asyncio.run(server.serve())
+
+    run()

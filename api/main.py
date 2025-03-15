@@ -1,6 +1,7 @@
+
+from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-import uvicorn
 from routers import (
     data_collection_router,
     user_interface_router,
@@ -44,4 +45,5 @@ app.include_router(data_management_router)
 app.include_router(image_upload_router)
 
 if __name__=='__main__':
-    uvicorn.run('api.main:app', host="0.0.0.0", port=8080,reload=True)
+    import uvicorn
+    uvicorn.run(app='api.main:app', host='0.0.0.0', port=8080, reload=True)
